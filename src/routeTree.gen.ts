@@ -16,6 +16,7 @@ import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDocumentsIndexRouteImport } from './routes/_authenticated/documents/index'
 import { Route as AuthenticatedDocumentsNewRouteImport } from './routes/_authenticated/documents/new'
+import { Route as AuthenticatedDocumentsIdIndexRouteImport } from './routes/_authenticated/documents/$id/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,6 +54,12 @@ const AuthenticatedDocumentsNewRoute =
     path: '/documents/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDocumentsIdIndexRoute =
+  AuthenticatedDocumentsIdIndexRouteImport.update({
+    id: '/documents/$id/',
+    path: '/documents/$id/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents/': typeof AuthenticatedDocumentsIndexRoute
+  '/documents/$id/': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,6 +77,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents': typeof AuthenticatedDocumentsIndexRoute
+  '/documents/$id': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,14 +88,27 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/_authenticated/documents/': typeof AuthenticatedDocumentsIndexRoute
+  '/_authenticated/documents/$id/': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/clients' | '/dashboard' | '/documents/new' | '/documents/'
+    | '/'
+    | '/auth'
+    | '/clients'
+    | '/dashboard'
+    | '/documents/new'
+    | '/documents/'
+    | '/documents/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/auth' | '/clients' | '/dashboard' | '/documents/new' | '/documents'
+    | '/'
+    | '/auth'
+    | '/clients'
+    | '/dashboard'
+    | '/documents/new'
+    | '/documents'
+    | '/documents/$id'
   id:
     | '__root__'
     | '/'
@@ -96,6 +118,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documents/new'
     | '/_authenticated/documents/'
+    | '/_authenticated/documents/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDocumentsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/documents/$id/': {
+      id: '/_authenticated/documents/$id/'
+      path: '/documents/$id'
+      fullPath: '/documents/$id/'
+      preLoaderRoute: typeof AuthenticatedDocumentsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -163,6 +193,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsNewRoute: typeof AuthenticatedDocumentsNewRoute
   AuthenticatedDocumentsIndexRoute: typeof AuthenticatedDocumentsIndexRoute
+  AuthenticatedDocumentsIdIndexRoute: typeof AuthenticatedDocumentsIdIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -170,6 +201,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsNewRoute: AuthenticatedDocumentsNewRoute,
   AuthenticatedDocumentsIndexRoute: AuthenticatedDocumentsIndexRoute,
+  AuthenticatedDocumentsIdIndexRoute: AuthenticatedDocumentsIdIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

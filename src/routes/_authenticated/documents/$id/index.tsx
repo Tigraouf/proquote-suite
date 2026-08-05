@@ -7,7 +7,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
 import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
 
-export const Route = createFileRoute("/_authenticated/documents/$id")({
+export const Route = createFileRoute("/_authenticated/documents/$id/")({
   head: () => ({
     meta: [
       { title: "Document — Facturea" },
