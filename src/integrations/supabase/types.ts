@@ -14,7 +14,256 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clients: {
+        Row: {
+          address: string | null
+          city: string | null
+          contact_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_company: boolean
+          name: string
+          notes: string | null
+          phone: string | null
+          postal_code: string | null
+          siret: string | null
+          updated_at: string
+          user_id: string
+          vat_number: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_company?: boolean
+          name: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          siret?: string | null
+          updated_at?: string
+          user_id: string
+          vat_number?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_company?: boolean
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          siret?: string | null
+          updated_at?: string
+          user_id?: string
+          vat_number?: string | null
+        }
+        Relationships: []
+      }
+      document_items: {
+        Row: {
+          created_at: string
+          description: string
+          document_id: string
+          id: string
+          position: number
+          quantity: number
+          unit: string
+          unit_price: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          document_id: string
+          id?: string
+          position?: number
+          quantity?: number
+          unit?: string
+          unit_price?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          document_id?: string
+          id?: string
+          position?: number
+          quantity?: number
+          unit?: string
+          unit_price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_items_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          discount: number
+          due_date: string | null
+          id: string
+          issue_date: string
+          last_reminder_at: string | null
+          notes: string | null
+          number: string
+          paid_at: string | null
+          payment_terms: string | null
+          status: Database["public"]["Enums"]["doc_status"]
+          subtotal: number
+          total: number
+          type: Database["public"]["Enums"]["doc_type"]
+          updated_at: string
+          user_id: string
+          vat_amount: number
+          vat_rate: number
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          discount?: number
+          due_date?: string | null
+          id?: string
+          issue_date?: string
+          last_reminder_at?: string | null
+          notes?: string | null
+          number: string
+          paid_at?: string | null
+          payment_terms?: string | null
+          status?: Database["public"]["Enums"]["doc_status"]
+          subtotal?: number
+          total?: number
+          type?: Database["public"]["Enums"]["doc_type"]
+          updated_at?: string
+          user_id: string
+          vat_amount?: number
+          vat_rate?: number
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          discount?: number
+          due_date?: string | null
+          id?: string
+          issue_date?: string
+          last_reminder_at?: string | null
+          notes?: string | null
+          number?: string
+          paid_at?: string | null
+          payment_terms?: string | null
+          status?: Database["public"]["Enums"]["doc_status"]
+          subtotal?: number
+          total?: number
+          type?: Database["public"]["Enums"]["doc_type"]
+          updated_at?: string
+          user_id?: string
+          vat_amount?: number
+          vat_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          city: string | null
+          company_name: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          hourly_rate: number | null
+          iban: string | null
+          id: string
+          legal_form: string | null
+          logo_url: string | null
+          payment_terms_days: number
+          phone: string | null
+          plan: Database["public"]["Enums"]["plan_type"]
+          plan_renews_at: string | null
+          postal_code: string | null
+          siret: string | null
+          trade: string | null
+          updated_at: string
+          vat_exempt: boolean
+          vat_number: string | null
+          vat_rate: number
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          hourly_rate?: number | null
+          iban?: string | null
+          id: string
+          legal_form?: string | null
+          logo_url?: string | null
+          payment_terms_days?: number
+          phone?: string | null
+          plan?: Database["public"]["Enums"]["plan_type"]
+          plan_renews_at?: string | null
+          postal_code?: string | null
+          siret?: string | null
+          trade?: string | null
+          updated_at?: string
+          vat_exempt?: boolean
+          vat_number?: string | null
+          vat_rate?: number
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          hourly_rate?: number | null
+          iban?: string | null
+          id?: string
+          legal_form?: string | null
+          logo_url?: string | null
+          payment_terms_days?: number
+          phone?: string | null
+          plan?: Database["public"]["Enums"]["plan_type"]
+          plan_renews_at?: string | null
+          postal_code?: string | null
+          siret?: string | null
+          trade?: string | null
+          updated_at?: string
+          vat_exempt?: boolean
+          vat_number?: string | null
+          vat_rate?: number
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +272,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      doc_status:
+        | "brouillon"
+        | "envoye"
+        | "accepte"
+        | "refuse"
+        | "paye"
+        | "en_retard"
+        | "annule"
+      doc_type: "devis" | "facture"
+      plan_type: "free" | "premium"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +408,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      doc_status: [
+        "brouillon",
+        "envoye",
+        "accepte",
+        "refuse",
+        "paye",
+        "en_retard",
+        "annule",
+      ],
+      doc_type: ["devis", "facture"],
+      plan_type: ["free", "premium"],
+    },
   },
 } as const
