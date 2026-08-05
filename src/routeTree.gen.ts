@@ -17,6 +17,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDocumentsIndexRouteImport } from './routes/_authenticated/documents/index'
 import { Route as AuthenticatedDocumentsNewRouteImport } from './routes/_authenticated/documents/new'
 import { Route as AuthenticatedDocumentsIdIndexRouteImport } from './routes/_authenticated/documents/$id/index'
+import { Route as AuthenticatedDocumentsIdEditRouteImport } from './routes/_authenticated/documents/$id/edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -60,6 +61,12 @@ const AuthenticatedDocumentsIdIndexRoute =
     path: '/documents/$id/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDocumentsIdEditRoute =
+  AuthenticatedDocumentsIdEditRouteImport.update({
+    id: '/documents/$id/edit',
+    path: '/documents/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents/': typeof AuthenticatedDocumentsIndexRoute
+  '/documents/$id/edit': typeof AuthenticatedDocumentsIdEditRoute
   '/documents/$id/': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +85,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents': typeof AuthenticatedDocumentsIndexRoute
+  '/documents/$id/edit': typeof AuthenticatedDocumentsIdEditRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRoutesById {
@@ -88,6 +97,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/_authenticated/documents/': typeof AuthenticatedDocumentsIndexRoute
+  '/_authenticated/documents/$id/edit': typeof AuthenticatedDocumentsIdEditRoute
   '/_authenticated/documents/$id/': typeof AuthenticatedDocumentsIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents/new'
     | '/documents/'
+    | '/documents/$id/edit'
     | '/documents/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents/new'
     | '/documents'
+    | '/documents/$id/edit'
     | '/documents/$id'
   id:
     | '__root__'
@@ -118,6 +130,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documents/new'
     | '/_authenticated/documents/'
+    | '/_authenticated/documents/$id/edit'
     | '/_authenticated/documents/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDocumentsIdIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/documents/$id/edit': {
+      id: '/_authenticated/documents/$id/edit'
+      path: '/documents/$id/edit'
+      fullPath: '/documents/$id/edit'
+      preLoaderRoute: typeof AuthenticatedDocumentsIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -193,6 +213,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsNewRoute: typeof AuthenticatedDocumentsNewRoute
   AuthenticatedDocumentsIndexRoute: typeof AuthenticatedDocumentsIndexRoute
+  AuthenticatedDocumentsIdEditRoute: typeof AuthenticatedDocumentsIdEditRoute
   AuthenticatedDocumentsIdIndexRoute: typeof AuthenticatedDocumentsIdIndexRoute
 }
 
@@ -201,6 +222,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsNewRoute: AuthenticatedDocumentsNewRoute,
   AuthenticatedDocumentsIndexRoute: AuthenticatedDocumentsIndexRoute,
+  AuthenticatedDocumentsIdEditRoute: AuthenticatedDocumentsIdEditRoute,
   AuthenticatedDocumentsIdIndexRoute: AuthenticatedDocumentsIdIndexRoute,
 }
 
