@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedDocumentsIndexRouteImport } from './routes/_authenticated/documents/index'
 import { Route as AuthenticatedDocumentsNewRouteImport } from './routes/_authenticated/documents/new'
@@ -42,6 +43,11 @@ const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPremiumRoute = AuthenticatedPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/premium': typeof AuthenticatedPremiumRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents/': typeof AuthenticatedDocumentsIndexRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/premium': typeof AuthenticatedPremiumRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/documents': typeof AuthenticatedDocumentsIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/clients': typeof AuthenticatedClientsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/premium': typeof AuthenticatedPremiumRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/documents/new': typeof AuthenticatedDocumentsNewRoute
   '/_authenticated/documents/': typeof AuthenticatedDocumentsIndexRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/clients'
     | '/dashboard'
+    | '/premium'
     | '/settings'
     | '/documents/new'
     | '/documents/'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/clients'
     | '/dashboard'
+    | '/premium'
     | '/settings'
     | '/documents/new'
     | '/documents'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/clients'
     | '/_authenticated/dashboard'
+    | '/_authenticated/premium'
     | '/_authenticated/settings'
     | '/_authenticated/documents/new'
     | '/_authenticated/documents/'
@@ -189,6 +201,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/premium': {
+      id: '/_authenticated/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof AuthenticatedPremiumRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -230,6 +249,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedClientsRoute: typeof AuthenticatedClientsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedDocumentsNewRoute: typeof AuthenticatedDocumentsNewRoute
   AuthenticatedDocumentsIndexRoute: typeof AuthenticatedDocumentsIndexRoute
@@ -240,6 +260,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedClientsRoute: AuthenticatedClientsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedDocumentsNewRoute: AuthenticatedDocumentsNewRoute,
   AuthenticatedDocumentsIndexRoute: AuthenticatedDocumentsIndexRoute,
