@@ -53,7 +53,6 @@ function Settings() {
     vat_exempt: false,
     vat_rate: 20,
     payment_terms_days: 30,
-    legal_status: "",
   });
 
   useEffect(() => {
@@ -72,7 +71,6 @@ function Settings() {
       vat_exempt: profile.vat_exempt ?? false,
       vat_rate: Number(profile.vat_rate ?? 20),
       payment_terms_days: profile.payment_terms_days ?? 30,
-      legal_status: profile.legal_status ?? "",
     });
   }, [profile]);
 
@@ -124,11 +122,6 @@ function Settings() {
           </Select>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <F
-            label="Statut juridique"
-            v={form.legal_status}
-            on={(v) => setForm({ ...form, legal_status: v })}
-          />
           <F label="Téléphone" v={form.phone} on={(v) => setForm({ ...form, phone: v })} />
         </div>
       </div>
