@@ -88,15 +88,15 @@ export function DocumentEditor({ documentId }: Props) {
     if (!data || loaded) return;
     if (data.existing) {
       const e = data.existing as Record<string, unknown>;
-      setType(e.type as DocType);
-      setClientId((e.client_id as string) ?? "");
-      setStatus(e.status as DocStatus);
-      setNumber(e.number as string);
-      setIssueDate(e.issue_date as string);
-      setDueDate((e.due_date as string) ?? "");
-      setVatRate(Number(e.vat_rate));
-      setDiscount(Number(e.discount));
-      setNotes((e.notes as string) ?? "");
+      setType(e["type"] as DocType);
+      setClientId((e["client_id"] as string) ?? "");
+      setStatus(e["status"] as DocStatus);
+      setNumber(e["number"] as string);
+      setIssueDate(e["issue_date"] as string);
+      setDueDate((e["due_date"] as string) ?? "");
+      setVatRate(Number(e["vat_rate"]));
+      setDiscount(Number(e["discount"]));
+      setNotes((e["notes"] as string) ?? "");
       if (data.existingItems.length) setItems(data.existingItems);
     } else {
       setNumber(nextNumber("devis", data.docs.map((d) => d.number as string)));
