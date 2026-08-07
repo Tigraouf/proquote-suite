@@ -5,7 +5,16 @@ import { Plus, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
+import {
+  euro,
+  frDate,
+  paymentStateTone,
+  paymentSummary,
+  PAYMENT_STATE_LABELS,
+  STATUS_LABELS,
+  statusTone,
+  type DocStatus,
+} from "@/lib/billing";
 
 export const Route = createFileRoute("/_authenticated/documents/")({
   head: () => ({
