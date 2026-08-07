@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
+import { PaymentsPanel } from "@/components/PaymentsPanel";
 import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
 
 export const Route = createFileRoute("/_authenticated/documents/$id/")({
@@ -214,6 +215,8 @@ function DocumentDetail() {
           </p>
         )}
       </div>
+
+      <PaymentsPanel documentId={id} total={Number(d["total"])} />
     </div>
   );
 }
