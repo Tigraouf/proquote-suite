@@ -215,6 +215,8 @@ function DocumentDetail() {
           </p>
         )}
       </div>
+
+      <PaymentsPanel documentId={id} total={Number(d["total"])} />
     </div>
   );
 }
