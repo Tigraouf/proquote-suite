@@ -97,29 +97,43 @@ function DocumentsPage() {
       </div>
 
       <div className="surface mt-5 divide-y divide-border">
-        {docs.map((d) => (
-          <Link
-            key={d.id as string}
-            to="/documents/$id"
-            params={{ id: d.id as string }}
-            className="flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-muted/60"
-          >
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">
-                {d.number as string} · {clients.find((c) => c.id === d.client_id)?.name ?? "Sans client"}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {d.type === "devis" ? "Devis" : "Facture"} · {frDate(d.issue_date as string)}
-              </p>
-            </div>
-            <div className="flex shrink-0 items-center gap-3">
-              <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusTone(d.status as DocStatus)}`}>
-                {STATUS_LABELS[d.status as DocStatus]}
-              </span>
-              <span className="text-sm font-semibold">{euro(Number(d.total))}</span>
-            </div>
-          </Link>
-        ))}
+        {docs.map((d) => {
+          const sum = paymentSummary(
+            Number(d.total),
+            payments.filter((p) => p.document_id === d.id).map((p) => ({ amount: Number(p.amount) })),
+          );
+          return (
+            <Link
+              key={d.id as string}
+              to="/documents/$id"
+              params={{ id: d.id as string }}
+              className="flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-muted/60"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium">
+                  {d.number as string} · {clients.find((c) => c.id === d.client_id)?.name ?? "Sans client"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {d.type === "devis" ? "Devis" : "Facture"} · {frDate(d.issue_date as string)}
+                  {d.type === "facture" && sum.due > 0 ? ` · Reste ${euro(sum.due)}` : ""}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                {d.type === "facture" && (
+                  <span
+                    className={`hidden rounded-full px-2.5 py-1 text-xs font-medium sm:inline ${paymentStateTone(sum.state)}`}
+                  >
+                    {PAYMENT_STATE_LABELS[sum.state]}
+                  </span>
+                )}
+                <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusTone(d.status as DocStatus)}`}>
+                  {STATUS_LABELS[d.status as DocStatus]}
+                </span>
+                <span className="text-sm font-semibold">{euro(Number(d.total))}</span>
+              </div>
+            </Link>
+          );
+        })}
         {docs.length === 0 && (
           <p className="px-5 py-12 text-center text-sm text-muted-foreground">Aucun document trouvé.</p>
         )}
