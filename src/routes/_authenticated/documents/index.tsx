@@ -35,17 +35,20 @@ function DocumentsPage() {
   const { data } = useQuery({
     queryKey: ["documents"],
     queryFn: async () => {
-      const [docs, clients] = await Promise.all([
+      const [docs, clients, payments] = await Promise.all([
         supabase.from("documents").select("*").order("issue_date", { ascending: false }),
         supabase.from("clients").select("id, name"),
+        supabase.from("payments").select("document_id, amount"),
       ]);
       if (docs.error) throw docs.error;
       if (clients.error) throw clients.error;
-      return { docs: docs.data ?? [], clients: clients.data ?? [] };
+      if (payments.error) throw payments.error;
+      return { docs: docs.data ?? [], clients: clients.data ?? [], payments: payments.data ?? [] };
     },
   });
 
   const clients = data?.clients ?? [];
+  const payments = data?.payments ?? [];
   const docs = (data?.docs ?? []).filter((d) => {
     if (filter !== "tous" && d.type !== filter) return false;
     if (!q.trim()) return true;
