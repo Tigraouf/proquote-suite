@@ -246,6 +246,7 @@ export type Database = {
           payment_terms_days: number
           phone: string | null
           plan: Database["public"]["Enums"]["plan_type"]
+          plan_cycle: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at: string | null
           postal_code: string | null
           siret: string | null
@@ -271,6 +272,7 @@ export type Database = {
           payment_terms_days?: number
           phone?: string | null
           plan?: Database["public"]["Enums"]["plan_type"]
+          plan_cycle?: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at?: string | null
           postal_code?: string | null
           siret?: string | null
@@ -296,6 +298,7 @@ export type Database = {
           payment_terms_days?: number
           phone?: string | null
           plan?: Database["public"]["Enums"]["plan_type"]
+          plan_cycle?: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at?: string | null
           postal_code?: string | null
           siret?: string | null
@@ -325,6 +328,7 @@ export type Database = {
         | "en_retard"
         | "annule"
       doc_type: "devis" | "facture"
+      plan_cycle: "none" | "monthly" | "yearly"
       plan_type: "free" | "premium"
     }
     CompositeTypes: {
@@ -463,6 +467,7 @@ export const Constants = {
         "annule",
       ],
       doc_type: ["devis", "facture"],
+      plan_cycle: ["none", "monthly", "yearly"],
       plan_type: ["free", "premium"],
     },
   },
