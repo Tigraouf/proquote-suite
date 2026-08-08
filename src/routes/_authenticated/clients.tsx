@@ -71,7 +71,7 @@ const clientSchema = z.object({
 function ClientsPage() {
   const qc = useQueryClient();
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const premium = usePlan().isPremium;
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<ClientRow | null>(null);
   const [form, setForm] = useState({ ...emptyClient });
