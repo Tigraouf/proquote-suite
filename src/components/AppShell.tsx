@@ -29,6 +29,7 @@ export function AppShell() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: profile } = useProfile();
+  const plan = usePlan();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   async function signOut() {
