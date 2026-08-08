@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { FREE_CLIENT_LIMIT, FREE_DOCS_PER_MONTH } from "@/lib/billing";
 
