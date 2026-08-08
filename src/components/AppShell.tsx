@@ -80,7 +80,11 @@ export function AppShell() {
             {profile?.company_name || profile?.full_name || "Mon entreprise"}
           </p>
           <p className="mt-0.5 text-xs text-sidebar-foreground/60">
-            Plan {profile?.plan === "premium" ? "Premium" : "Gratuit"}
+            {plan.isPremium
+              ? `Premium · ${plan.cycleLabel}`
+              : plan.expired
+                ? "Premium expiré · plan gratuit"
+                : "Plan gratuit"}
           </p>
           <button
             onClick={signOut}
