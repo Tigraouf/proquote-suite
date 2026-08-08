@@ -24,7 +24,7 @@ function DocumentDetail() {
   const { id } = useParams({ from: "/_authenticated/documents/$id" });
   const qc = useQueryClient();
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const { isPremium: premium } = usePlan();
 
   const { data, isLoading } = useQuery({
     queryKey: ["document", id],
