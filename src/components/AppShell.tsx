@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { cn } from "@/lib/utils";
 
 const NAV = [
