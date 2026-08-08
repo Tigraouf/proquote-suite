@@ -4,7 +4,7 @@ import { Check, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
-import { FREE_CLIENT_LIMIT, FREE_DOCS_PER_MONTH } from "@/lib/billing";
+import { FREE_CLIENT_LIMIT, FREE_DOCS_PER_MONTH, frDate } from "@/lib/billing";
 
 export const Route = createFileRoute("/_authenticated/premium")({
   head: () => ({
