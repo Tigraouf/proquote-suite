@@ -4,6 +4,7 @@ import { ArrowLeft, Pencil, Printer, Send, CheckCircle2, Lock } from "lucide-rea
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { PaymentsPanel } from "@/components/PaymentsPanel";
 import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
