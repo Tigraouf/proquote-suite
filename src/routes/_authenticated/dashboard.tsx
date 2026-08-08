@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FileText, Users, TrendingUp, AlertTriangle, Plus, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import {
   euro,
