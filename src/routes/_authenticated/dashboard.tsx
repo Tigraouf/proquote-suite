@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const { isPremium: premium, expired, cycleLabel, renewsAt } = usePlan();
 
   const { data } = useQuery({
     queryKey: ["dashboard"],
