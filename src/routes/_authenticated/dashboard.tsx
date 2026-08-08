@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FileText, Users, TrendingUp, AlertTriangle, Plus, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import {
   euro,
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const { isPremium: premium, expired, cycleLabel, renewsAt } = usePlan();
 
   const { data } = useQuery({
     queryKey: ["dashboard"],
@@ -103,11 +104,25 @@ function Dashboard() {
         <Stat icon={Users} label="Clients" value={String(clients.length)} hint={`${quotes.length} devis en cours`} />
       </div>
 
-      {!premium && (
+      {premium ? (
+        <div className="surface mt-6 flex flex-wrap items-center justify-between gap-4 p-5">
+          <div>
+            <p className="text-sm font-medium text-primary">Premium · {cycleLabel}</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Documents et clients illimités
+              {renewsAt ? ` · renouvellement le ${frDate(renewsAt.toISOString())}` : ""}
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/premium">Gérer l'abonnement</Link>
+          </Button>
+        </div>
+      ) : (
         <div className="surface mt-6 flex flex-wrap items-center justify-between gap-4 p-5">
           <div>
             <p className="flex items-center gap-2 text-sm font-medium">
-              <Lock className="size-4 text-primary" /> Plan gratuit
+              <Lock className="size-4 text-primary" />
+              {expired ? "Abonnement expiré — plan gratuit" : "Plan gratuit"}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               {monthDocs.length}/{FREE_DOCS_PER_MONTH} documents ce mois · {clients.length}/
@@ -115,7 +130,7 @@ function Dashboard() {
             </p>
           </div>
           <Button asChild variant="outline" size="sm">
-            <Link to="/premium">Passer en Premium</Link>
+            <Link to="/premium">{expired ? "Réactiver Premium" : "Passer en Premium"}</Link>
           </Button>
         </div>
       )}

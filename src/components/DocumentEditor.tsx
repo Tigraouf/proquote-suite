@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +35,7 @@ export function DocumentEditor({ documentId }: Props) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const premium = usePlan().isPremium;
   const trade = tradeById(profile?.trade);
 
   const [type, setType] = useState<DocType>("devis");

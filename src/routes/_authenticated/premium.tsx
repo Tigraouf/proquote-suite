@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
-import { FREE_CLIENT_LIMIT, FREE_DOCS_PER_MONTH } from "@/lib/billing";
+import { FREE_CLIENT_LIMIT, FREE_DOCS_PER_MONTH, frDate } from "@/lib/billing";
 
 export const Route = createFileRoute("/_authenticated/premium")({
   head: () => ({
@@ -42,10 +42,12 @@ const PLANS = {
 type Cycle = keyof typeof PLANS;
 
 function Premium() {
-  const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
-  const [cycle, setCycle] = useState<Cycle>("yearly");
+  const sub = usePlan();
+  const premium = sub.isPremium;
+  const [cycle, setCycle] = useState<Cycle>(sub.cycle === "monthly" ? "monthly" : "yearly");
   const plan = PLANS[cycle];
+
+
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -57,6 +59,27 @@ function Premium() {
         <p className="mt-2 text-sm text-muted-foreground">
           Un abonnement simple, résiliable à tout moment.
         </p>
+
+        <div className="surface mx-auto mt-6 max-w-md p-4 text-sm">
+          <p className="font-medium">
+            Statut :{" "}
+            {premium
+              ? `Premium ${sub.cycleLabel.toLowerCase()} actif`
+              : sub.expired
+                ? "Abonnement expiré"
+                : "Plan gratuit"}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {premium && sub.renewsAt
+              ? `Renouvellement le ${frDate(sub.renewsAt.toISOString())}${
+                  sub.daysLeft !== null ? ` (dans ${sub.daysLeft} j)` : ""
+                }`
+              : sub.expired
+                ? "Les fonctionnalités Premium sont désactivées jusqu'au renouvellement."
+                : `Limites en cours : ${FREE_DOCS_PER_MONTH} documents/mois et ${FREE_CLIENT_LIMIT} clients.`}
+          </p>
+        </div>
+
 
         <div className="mt-6 inline-flex rounded-full border border-border bg-muted/50 p-1">
           {(Object.keys(PLANS) as Cycle[]).map((key) => (

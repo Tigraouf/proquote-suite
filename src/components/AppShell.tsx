@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -28,6 +29,7 @@ export function AppShell() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: profile } = useProfile();
+  const plan = usePlan();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   async function signOut() {
@@ -80,7 +82,11 @@ export function AppShell() {
             {profile?.company_name || profile?.full_name || "Mon entreprise"}
           </p>
           <p className="mt-0.5 text-xs text-sidebar-foreground/60">
-            Plan {profile?.plan === "premium" ? "Premium" : "Gratuit"}
+            {plan.isPremium
+              ? `Premium · ${plan.cycleLabel}`
+              : plan.expired
+                ? "Premium expiré · plan gratuit"
+                : "Plan gratuit"}
           </p>
           <button
             onClick={signOut}

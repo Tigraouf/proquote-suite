@@ -21,6 +21,7 @@ export type Profile = {
   hourly_rate: number | null;
   payment_terms_days: number;
   plan: "free" | "premium";
+  plan_cycle: "none" | "monthly" | "yearly";
   plan_renews_at: string | null;
 };
 

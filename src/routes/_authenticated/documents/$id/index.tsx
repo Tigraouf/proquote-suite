@@ -4,6 +4,7 @@ import { ArrowLeft, Pencil, Printer, Send, CheckCircle2, Lock } from "lucide-rea
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { PaymentsPanel } from "@/components/PaymentsPanel";
 import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
@@ -24,7 +25,7 @@ function DocumentDetail() {
   const { id } = useParams({ from: "/_authenticated/documents/$id" });
   const qc = useQueryClient();
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const { isPremium: premium } = usePlan();
 
   const { data, isLoading } = useQuery({
     queryKey: ["document", id],
@@ -216,7 +217,19 @@ function DocumentDetail() {
         )}
       </div>
 
-      <PaymentsPanel documentId={id} total={Number(d["total"])} />
+      {premium ? (
+        <PaymentsPanel documentId={id} total={Number(d["total"])} />
+      ) : (
+        <div className="no-print surface mt-6 flex flex-wrap items-center justify-between gap-3 p-5 text-sm">
+          <span className="flex items-center gap-2">
+            <Lock className="size-4 text-primary" /> Le suivi détaillé des paiements (acomptes,
+            reste à payer) est inclus dans le Premium.
+          </span>
+          <Button asChild size="sm" variant="outline">
+            <Link to="/premium">Passer en Premium</Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
