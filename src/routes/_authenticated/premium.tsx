@@ -33,9 +33,18 @@ const PRO = [
   "Support prioritaire",
 ];
 
+const PLANS = {
+  monthly: { label: "Mensuel", price: "12 €", suffix: "/ mois", note: "Sans engagement" },
+  yearly: { label: "Annuel", price: "120 €", suffix: "/ an", note: "2 mois offerts (10 €/mois)" },
+} as const;
+
+type Cycle = keyof typeof PLANS;
+
 function Premium() {
   const { data: profile } = useProfile();
   const premium = profile?.plan === "premium";
+  const [cycle, setCycle] = useState<Cycle>("yearly");
+  const plan = PLANS[cycle];
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -47,12 +56,36 @@ function Premium() {
         <p className="mt-2 text-sm text-muted-foreground">
           Un abonnement simple, résiliable à tout moment.
         </p>
+
+        <div className="mt-6 inline-flex rounded-full border border-border bg-muted/50 p-1">
+          {(Object.keys(PLANS) as Cycle[]).map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setCycle(key)}
+              aria-pressed={cycle === key}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                cycle === key
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {PLANS[key].label}
+              {key === "yearly" && (
+                <span className="ml-2 rounded-full bg-primary/12 px-2 py-0.5 text-xs text-primary">
+                  -17 %
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="mt-10 grid gap-5 sm:grid-cols-2">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <div className="surface p-6">
           <p className="text-sm text-muted-foreground">Gratuit</p>
           <p className="font-display text-3xl font-semibold">0 €</p>
+          <p className="mt-1 text-xs text-muted-foreground">Pour démarrer</p>
           <ul className="mt-5 space-y-2.5 text-sm">
             {FREE.map((f) => (
               <li key={f} className="flex gap-2">
@@ -64,10 +97,12 @@ function Premium() {
         </div>
 
         <div className="surface border-primary/40 p-6 ring-1 ring-primary/20">
-          <p className="text-sm text-primary">Premium</p>
+          <p className="text-sm text-primary">Premium · {plan.label}</p>
           <p className="font-display text-3xl font-semibold">
-            12 € <span className="text-base font-normal text-muted-foreground">/ mois</span>
+            {plan.price}{" "}
+            <span className="text-base font-normal text-muted-foreground">{plan.suffix}</span>
           </p>
+          <p className="mt-1 text-xs text-muted-foreground">{plan.note}</p>
           <ul className="mt-5 space-y-2.5 text-sm">
             {PRO.map((f) => (
               <li key={f} className="flex gap-2">
@@ -81,14 +116,18 @@ function Premium() {
             disabled={premium}
             onClick={() =>
               toast.info(
-                "Le paiement en ligne sera activé prochainement. Dites-moi quand brancher l'abonnement.",
+                "Le paiement en ligne n'est pas encore activé. Dites-moi quand brancher l'abonnement.",
               )
             }
           >
-            {premium ? "Vous êtes Premium" : "S'abonner"}
+            {premium ? "Vous êtes Premium" : `S'abonner — ${plan.price} ${plan.suffix}`}
           </Button>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            Résiliable à tout moment · TVA incluse
+          </p>
         </div>
       </div>
     </div>
   );
 }
+
