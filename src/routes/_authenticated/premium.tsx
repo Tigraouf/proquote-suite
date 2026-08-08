@@ -60,6 +60,27 @@ function Premium() {
           Un abonnement simple, résiliable à tout moment.
         </p>
 
+        <div className="surface mx-auto mt-6 max-w-md p-4 text-sm">
+          <p className="font-medium">
+            Statut :{" "}
+            {premium
+              ? `Premium ${sub.cycleLabel.toLowerCase()} actif`
+              : sub.expired
+                ? "Abonnement expiré"
+                : "Plan gratuit"}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {premium && sub.renewsAt
+              ? `Renouvellement le ${frDate(sub.renewsAt.toISOString())}${
+                  sub.daysLeft !== null ? ` (dans ${sub.daysLeft} j)` : ""
+                }`
+              : sub.expired
+                ? "Les fonctionnalités Premium sont désactivées jusqu'au renouvellement."
+                : `Limites en cours : ${FREE_DOCS_PER_MONTH} documents/mois et ${FREE_CLIENT_LIMIT} clients.`}
+          </p>
+        </div>
+
+
         <div className="mt-6 inline-flex rounded-full border border-border bg-muted/50 p-1">
           {(Object.keys(PLANS) as Cycle[]).map((key) => (
             <button
