@@ -34,7 +34,7 @@ export function DocumentEditor({ documentId }: Props) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
+  const premium = usePlan().isPremium;
   const trade = tradeById(profile?.trade);
 
   const [type, setType] = useState<DocType>("devis");
