@@ -42,10 +42,12 @@ const PLANS = {
 type Cycle = keyof typeof PLANS;
 
 function Premium() {
-  const { data: profile } = useProfile();
-  const premium = profile?.plan === "premium";
-  const [cycle, setCycle] = useState<Cycle>("yearly");
+  const sub = usePlan();
+  const premium = sub.isPremium;
+  const [cycle, setCycle] = useState<Cycle>(sub.cycle === "monthly" ? "monthly" : "yearly");
   const plan = PLANS[cycle];
+
+
 
   return (
     <div className="mx-auto max-w-3xl">
