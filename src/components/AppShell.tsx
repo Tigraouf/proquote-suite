@@ -14,7 +14,9 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
 import { usePlan } from "@/hooks/usePlan";
+import { SubscriptionAlert } from "@/components/SubscriptionAlert";
 import { cn } from "@/lib/utils";
+
 
 const NAV = [
   { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
@@ -123,8 +125,10 @@ export function AppShell() {
         )}
 
         <main className="flex-1 px-4 py-6 sm:px-8 sm:py-10">
+          <SubscriptionAlert />
           <Outlet />
         </main>
+
       </div>
     </div>
   );
