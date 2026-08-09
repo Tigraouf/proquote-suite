@@ -311,6 +311,51 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_events: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          cycle: Database["public"]["Enums"]["plan_cycle"]
+          event: Database["public"]["Enums"]["sub_event"]
+          id: string
+          note: string | null
+          occurred_at: string
+          period_end: string | null
+          plan: Database["public"]["Enums"]["plan_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          cycle?: Database["public"]["Enums"]["plan_cycle"]
+          event?: Database["public"]["Enums"]["sub_event"]
+          id?: string
+          note?: string | null
+          occurred_at?: string
+          period_end?: string | null
+          plan?: Database["public"]["Enums"]["plan_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          cycle?: Database["public"]["Enums"]["plan_cycle"]
+          event?: Database["public"]["Enums"]["sub_event"]
+          id?: string
+          note?: string | null
+          occurred_at?: string
+          period_end?: string | null
+          plan?: Database["public"]["Enums"]["plan_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -330,6 +375,13 @@ export type Database = {
       doc_type: "devis" | "facture"
       plan_cycle: "none" | "monthly" | "yearly"
       plan_type: "free" | "premium"
+      sub_event:
+        | "souscription"
+        | "renouvellement"
+        | "changement"
+        | "expiration"
+        | "annulation"
+        | "reprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -469,6 +521,14 @@ export const Constants = {
       doc_type: ["devis", "facture"],
       plan_cycle: ["none", "monthly", "yearly"],
       plan_type: ["free", "premium"],
+      sub_event: [
+        "souscription",
+        "renouvellement",
+        "changement",
+        "expiration",
+        "annulation",
+        "reprise",
+      ],
     },
   },
 } as const
