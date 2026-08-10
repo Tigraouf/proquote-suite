@@ -181,10 +181,18 @@ function ClientsPage() {
               : `${clients.length}/${FREE_CLIENT_LIMIT} clients (plan gratuit)`}
           </p>
         </div>
-        <Button onClick={openNew} disabled={atLimit}>
+        <Button onClick={openNew}>
           {atLimit ? <Lock className="size-4" /> : <Plus className="size-4" />} Nouveau client
         </Button>
       </div>
+
+      <PremiumLockDialog
+        open={lockOpen}
+        onOpenChange={setLockOpen}
+        title="Limite de clients atteinte"
+        description={`Le plan gratuit est limité à ${FREE_CLIENT_LIMIT} clients. Passez en Premium pour gérer un carnet d'adresses illimité.`}
+      />
+
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {clients.map((c) => {
