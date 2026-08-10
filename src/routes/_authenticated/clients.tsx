@@ -141,13 +141,14 @@ function ClientsPage() {
 
   function openNew() {
     if (atLimit) {
-      toast.error(`Le plan gratuit est limité à ${FREE_CLIENT_LIMIT} clients.`);
+      setLockOpen(true);
       return;
     }
     setEditing(null);
     setForm({ ...emptyClient });
     setOpen(true);
   }
+
 
   function openEdit(c: ClientRow) {
     setEditing(c);
