@@ -220,16 +220,20 @@ function DocumentDetail() {
       {premium ? (
         <PaymentsPanel documentId={id} total={Number(d["total"])} />
       ) : (
-        <div className="no-print surface mt-6 flex flex-wrap items-center justify-between gap-3 p-5 text-sm">
-          <span className="flex items-center gap-2">
-            <Lock className="size-4 text-primary" /> Le suivi détaillé des paiements (acomptes,
-            reste à payer) est inclus dans le Premium.
-          </span>
-          <Button asChild size="sm" variant="outline">
-            <Link to="/premium">Passer en Premium</Link>
-          </Button>
+        <div className="mt-8">
+          <PremiumLock
+            title="Suivi des paiements verrouillé"
+            description="Acomptes, reste à payer et historique des règlements sont inclus dans le Premium."
+            perks={[
+              "Acomptes et paiements partiels",
+              "Reste à payer calculé automatiquement",
+              "Statut mis à jour tout seul",
+              "Relances des impayés",
+            ]}
+          />
         </div>
       )}
+
     </div>
   );
 }
