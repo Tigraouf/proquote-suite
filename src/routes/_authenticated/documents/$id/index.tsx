@@ -100,15 +100,13 @@ function DocumentDetail() {
       </div>
 
       {!premium && !isQuote && d["status"] !== "paye" && (
-        <div className="no-print surface mt-4 flex flex-wrap items-center justify-between gap-3 p-4 text-sm">
-          <span className="flex items-center gap-2">
-            <Lock className="size-4 text-primary" /> Les relances automatiques sont réservées au Premium.
-          </span>
-          <Button asChild size="sm" variant="outline">
-            <Link to="/premium">Découvrir</Link>
-          </Button>
-        </div>
+        <PremiumLock
+          compact
+          title="Relances automatiques verrouillées"
+          description="Passez en Premium pour relancer automatiquement les factures impayées."
+        />
       )}
+
 
       <div className="doc-sheet mt-6 p-8 sm:p-10">
         <div className="flex flex-wrap items-start justify-between gap-6">
