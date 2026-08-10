@@ -74,6 +74,8 @@ function ClientsPage() {
   const { data: profile } = useProfile();
   const premium = usePlan().isPremium;
   const [open, setOpen] = useState(false);
+  const [lockOpen, setLockOpen] = useState(false);
+
   const [editing, setEditing] = useState<ClientRow | null>(null);
   const [form, setForm] = useState({ ...emptyClient });
 
