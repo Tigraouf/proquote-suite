@@ -7,6 +7,8 @@ import { useProfile } from "@/hooks/useProfile";
 import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { PaymentsPanel } from "@/components/PaymentsPanel";
+import { PremiumLock } from "@/components/PremiumLock";
+
 import { euro, frDate, STATUS_LABELS, statusTone, type DocStatus } from "@/lib/billing";
 
 export const Route = createFileRoute("/_authenticated/documents/$id/")({
