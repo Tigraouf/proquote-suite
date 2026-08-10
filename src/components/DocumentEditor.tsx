@@ -196,18 +196,31 @@ export function DocumentEditor({ documentId }: Props) {
     }
   }
 
+  if (blocked) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <h1 className="font-display text-2xl font-semibold sm:text-3xl">Nouveau document</h1>
+        <div className="mt-8">
+          <PremiumLock
+            title="Limite de documents atteinte"
+            description={`Le plan gratuit permet ${FREE_DOCS_PER_MONTH} documents par mois. Passez en Premium pour créer des devis et factures sans limite.`}
+            secondary={
+              <Button asChild variant="outline">
+                <Link to="/documents">Voir mes documents</Link>
+              </Button>
+            }
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="font-display text-2xl font-semibold sm:text-3xl">
         {documentId ? "Modifier le document" : "Nouveau document"}
       </h1>
 
-      {blocked && (
-        <div className="surface mt-5 border-destructive/30 p-4 text-sm">
-          Vous avez atteint la limite gratuite de {FREE_DOCS_PER_MONTH} documents ce mois-ci. Passez
-          en Premium pour continuer.
-        </div>
-      )}
 
       <div className="surface mt-6 space-y-5 p-6">
         <div className="grid gap-4 sm:grid-cols-2">
