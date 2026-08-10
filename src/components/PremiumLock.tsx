@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Lock, Sparkles, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 const DEFAULT_PERKS = [
   "Documents et clients illimités",
@@ -87,6 +87,7 @@ export function PremiumLockDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg border-none bg-transparent p-0 shadow-none">
+        <DialogTitle className="sr-only">{props.title}</DialogTitle>
         <PremiumLock
           {...props}
           secondary={
