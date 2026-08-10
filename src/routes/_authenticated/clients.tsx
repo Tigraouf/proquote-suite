@@ -7,6 +7,8 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
 import { usePlan } from "@/hooks/usePlan";
+import { PremiumLockDialog } from "@/components/PremiumLock";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,6 +76,8 @@ function ClientsPage() {
   const { data: profile } = useProfile();
   const premium = usePlan().isPremium;
   const [open, setOpen] = useState(false);
+  const [lockOpen, setLockOpen] = useState(false);
+
   const [editing, setEditing] = useState<ClientRow | null>(null);
   const [form, setForm] = useState({ ...emptyClient });
 
@@ -141,13 +145,14 @@ function ClientsPage() {
 
   function openNew() {
     if (atLimit) {
-      toast.error(`Le plan gratuit est limité à ${FREE_CLIENT_LIMIT} clients.`);
+      setLockOpen(true);
       return;
     }
     setEditing(null);
     setForm({ ...emptyClient });
     setOpen(true);
   }
+
 
   function openEdit(c: ClientRow) {
     setEditing(c);
@@ -178,10 +183,18 @@ function ClientsPage() {
               : `${clients.length}/${FREE_CLIENT_LIMIT} clients (plan gratuit)`}
           </p>
         </div>
-        <Button onClick={openNew} disabled={atLimit}>
+        <Button onClick={openNew}>
           {atLimit ? <Lock className="size-4" /> : <Plus className="size-4" />} Nouveau client
         </Button>
       </div>
+
+      <PremiumLockDialog
+        open={lockOpen}
+        onOpenChange={setLockOpen}
+        title="Limite de clients atteinte"
+        description={`Le plan gratuit est limité à ${FREE_CLIENT_LIMIT} clients. Passez en Premium pour gérer un carnet d'adresses illimité.`}
+      />
+
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {clients.map((c) => {
