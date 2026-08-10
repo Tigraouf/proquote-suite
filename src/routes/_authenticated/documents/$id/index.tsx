@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/documents/$id/")({
 });
 
 function DocumentDetail() {
-  const { id } = useParams({ from: "/_authenticated/documents/$id" });
+  const { id } = useParams({ from: "/_authenticated/documents/$id/" });
   const qc = useQueryClient();
   const { data: profile } = useProfile();
   const { isPremium: premium } = usePlan();
