@@ -20,6 +20,10 @@ export type Profile = {
   iban: string | null;
   hourly_rate: number | null;
   payment_terms_days: number;
+  late_penalty_rate: number;
+  recovery_fee: number;
+  legal_notes: string | null;
+
   plan: "free" | "premium";
   plan_cycle: "none" | "monthly" | "yearly";
   plan_renews_at: string | null;

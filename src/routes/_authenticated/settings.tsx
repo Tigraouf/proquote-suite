@@ -8,6 +8,8 @@ import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -50,10 +52,15 @@ function Settings() {
     city: "",
     phone: "",
     website: "",
+    iban: "",
     vat_exempt: false,
     vat_rate: 20,
     payment_terms_days: 30,
+    late_penalty_rate: 10.75,
+    recovery_fee: 40,
+    legal_notes: "",
   });
+
 
   useEffect(() => {
     if (!profile) return;
@@ -68,9 +75,14 @@ function Settings() {
       city: profile.city ?? "",
       phone: profile.phone ?? "",
       website: profile.website ?? "",
+      iban: profile.iban ?? "",
       vat_exempt: profile.vat_exempt ?? false,
       vat_rate: Number(profile.vat_rate ?? 20),
       payment_terms_days: profile.payment_terms_days ?? 30,
+      late_penalty_rate: Number(profile.late_penalty_rate ?? 10.75),
+      recovery_fee: Number(profile.recovery_fee ?? 40),
+      legal_notes: profile.legal_notes ?? "",
+
     });
   }, [profile]);
 
@@ -171,9 +183,46 @@ function Settings() {
             />
           </div>
         </div>
+        <F label="IBAN (affiché sur les factures)" v={form.iban} on={(v) => setForm({ ...form, iban: v })} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label>Pénalités de retard (% / an)</Label>
+            <Input
+              type="number"
+              min={0}
+              step="0.01"
+              value={form.late_penalty_rate}
+              onChange={(e) => setForm({ ...form, late_penalty_rate: Number(e.target.value) })}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Indemnité de recouvrement (€)</Label>
+            <Input
+              type="number"
+              min={0}
+              step="1"
+              value={form.recovery_fee}
+              onChange={(e) => setForm({ ...form, recovery_fee: Number(e.target.value) })}
+            />
+          </div>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Mentions complémentaires</Label>
+          <Textarea
+            value={form.legal_notes}
+            maxLength={600}
+            placeholder="Assurance décennale n°…, médiateur de la consommation, RCS…"
+            onChange={(e) => setForm({ ...form, legal_notes: e.target.value })}
+          />
+          <p className="text-xs text-muted-foreground">
+            Les mentions légales obligatoires (pénalités, indemnité 40 €, franchise de TVA) sont ajoutées
+            automatiquement au bas de vos factures.
+          </p>
+        </div>
         <Button className="w-full" onClick={() => save.mutate()} disabled={save.isPending}>
           {save.isPending ? "Enregistrement…" : "Enregistrer"}
         </Button>
+
       </div>
     </div>
   );

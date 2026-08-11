@@ -135,3 +135,55 @@ export function paymentStateTone(state: "non_paye" | "partiel" | "solde") {
       return "bg-muted text-muted-foreground";
   }
 }
+
+/** Mentions légales obligatoires sur une facture française. */
+export function legalMentions(opts: {
+  isQuote: boolean;
+  vatExempt?: boolean | null | undefined;
+  penaltyRate?: number | null | undefined;
+  recoveryFee?: number | null | undefined;
+  paymentTermsDays?: number | null | undefined;
+  extra?: string | null | undefined;
+}) {
+  const lines: string[] = [];
+  if (opts.vatExempt) lines.push("TVA non applicable, art. 293 B du CGI.");
+  if (opts.isQuote) {
+    lines.push("Devis gratuit — à retourner daté, signé et portant la mention « Bon pour accord ».");
+  } else {
+    lines.push(
+      `Paiement à ${opts.paymentTermsDays ?? 30} jours à compter de la date d'émission de la facture.`,
+    );
+    lines.push(
+      `En cas de retard de paiement : pénalités au taux de ${Number(
+        opts.penaltyRate ?? 10.75,
+      )
+        .toString()
+        .replace(".", ",")} % l'an, exigibles sans rappel, et indemnité forfaitaire pour frais de recouvrement de ${euro(
+        opts.recoveryFee ?? 40,
+      )} (art. L441-10 et D441-5 du Code de commerce).`,
+    );
+    lines.push("Pas d'escompte pour paiement anticipé.");
+  }
+  if (opts.extra?.trim()) lines.push(opts.extra.trim());
+  return lines;
+}
+
+/** Génère un CSV (séparateur ;) compatible tableur / expert-comptable. */
+export function toCsv(rows: (string | number | null | undefined)[][]) {
+  const esc = (v: string | number | null | undefined) => {
+    const s = String(v ?? "");
+    return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  return "\uFEFF" + rows.map((r) => r.map(esc).join(";")).join("\r\n");
+}
+
+export function downloadCsv(filename: string, content: string) {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+

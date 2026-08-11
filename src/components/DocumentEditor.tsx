@@ -112,10 +112,20 @@ export function DocumentEditor({ documentId }: Props) {
     setLoaded(true);
   }, [data, loaded, profile, trade]);
 
+  // Numérotation officielle : la suite est calculée par la base pour rester
+  // continue et sans doublon, même avec plusieurs onglets ouverts.
   useEffect(() => {
     if (!loaded || documentId || !data) return;
+    let cancelled = false;
     setNumber(nextNumber(type, data.docs.map((d) => d.number as string)));
+    supabase.rpc("next_document_number", { _type: type }).then(({ data: n, error }) => {
+      if (!cancelled && !error && typeof n === "string") setNumber(n);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [type, loaded, documentId, data]);
+
 
   const totals = useMemo(() => computeTotals(items, vatRate, discount), [items, vatRate, discount]);
   const monthCount = (data?.docs ?? []).filter((d) => {
@@ -165,14 +175,28 @@ export function DocumentEditor({ documentId }: Props) {
         if (error) throw error;
         await supabase.from("document_items").delete().eq("document_id", id);
       } else {
-        const { data: inserted, error } = await supabase
-          .from("documents")
-          .insert(payload)
-          .select("id")
-          .single();
-        if (error) throw error;
-        id = inserted.id as string;
+        // Si le numéro est déjà pris (autre onglet, double clic), on redemande
+        // le suivant à la base pour préserver une numérotation continue.
+        let attempt = 0;
+        for (;;) {
+          const { data: inserted, error } = await supabase
+            .from("documents")
+            .insert(payload)
+            .select("id")
+            .single();
+          if (!error) {
+            id = inserted.id as string;
+            break;
+          }
+          if (error.code !== "23505" || attempt >= 3) throw error;
+          attempt += 1;
+          const { data: n } = await supabase.rpc("next_document_number", { _type: type });
+          if (typeof n !== "string") throw error;
+          payload.number = n;
+          setNumber(n);
+        }
       }
+
 
       const rows = items
         .filter((i) => i.description.trim())
