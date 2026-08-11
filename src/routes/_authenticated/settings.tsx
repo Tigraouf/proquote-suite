@@ -181,9 +181,46 @@ function Settings() {
             />
           </div>
         </div>
+        <F label="IBAN (affiché sur les factures)" v={form.iban} on={(v) => setForm({ ...form, iban: v })} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label>Pénalités de retard (% / an)</Label>
+            <Input
+              type="number"
+              min={0}
+              step="0.01"
+              value={form.late_penalty_rate}
+              onChange={(e) => setForm({ ...form, late_penalty_rate: Number(e.target.value) })}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Indemnité de recouvrement (€)</Label>
+            <Input
+              type="number"
+              min={0}
+              step="1"
+              value={form.recovery_fee}
+              onChange={(e) => setForm({ ...form, recovery_fee: Number(e.target.value) })}
+            />
+          </div>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Mentions complémentaires</Label>
+          <Textarea
+            value={form.legal_notes}
+            maxLength={600}
+            placeholder="Assurance décennale n°…, médiateur de la consommation, RCS…"
+            onChange={(e) => setForm({ ...form, legal_notes: e.target.value })}
+          />
+          <p className="text-xs text-muted-foreground">
+            Les mentions légales obligatoires (pénalités, indemnité 40 €, franchise de TVA) sont ajoutées
+            automatiquement au bas de vos factures.
+          </p>
+        </div>
         <Button className="w-full" onClick={() => save.mutate()} disabled={save.isPending}>
           {save.isPending ? "Enregistrement…" : "Enregistrer"}
         </Button>
+
       </div>
     </div>
   );
