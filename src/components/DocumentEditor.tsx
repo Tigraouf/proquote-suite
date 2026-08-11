@@ -112,10 +112,20 @@ export function DocumentEditor({ documentId }: Props) {
     setLoaded(true);
   }, [data, loaded, profile, trade]);
 
+  // Numérotation officielle : la suite est calculée par la base pour rester
+  // continue et sans doublon, même avec plusieurs onglets ouverts.
   useEffect(() => {
     if (!loaded || documentId || !data) return;
+    let cancelled = false;
     setNumber(nextNumber(type, data.docs.map((d) => d.number as string)));
+    supabase.rpc("next_document_number", { _type: type }).then(({ data: n, error }) => {
+      if (!cancelled && !error && typeof n === "string") setNumber(n);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [type, loaded, documentId, data]);
+
 
   const totals = useMemo(() => computeTotals(items, vatRate, discount), [items, vatRate, discount]);
   const monthCount = (data?.docs ?? []).filter((d) => {
