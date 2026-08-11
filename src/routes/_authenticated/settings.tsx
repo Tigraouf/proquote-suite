@@ -73,9 +73,14 @@ function Settings() {
       city: profile.city ?? "",
       phone: profile.phone ?? "",
       website: profile.website ?? "",
+      iban: profile.iban ?? "",
       vat_exempt: profile.vat_exempt ?? false,
       vat_rate: Number(profile.vat_rate ?? 20),
       payment_terms_days: profile.payment_terms_days ?? 30,
+      late_penalty_rate: Number(profile.late_penalty_rate ?? 10.75),
+      recovery_fee: Number(profile.recovery_fee ?? 40),
+      legal_notes: profile.legal_notes ?? "",
+
     });
   }, [profile]);
 
