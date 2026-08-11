@@ -139,11 +139,11 @@ export function paymentStateTone(state: "non_paye" | "partiel" | "solde") {
 /** Mentions légales obligatoires sur une facture française. */
 export function legalMentions(opts: {
   isQuote: boolean;
-  vatExempt?: boolean | null;
-  penaltyRate?: number | null;
-  recoveryFee?: number | null;
-  paymentTermsDays?: number | null;
-  extra?: string | null;
+  vatExempt?: boolean | null | undefined;
+  penaltyRate?: number | null | undefined;
+  recoveryFee?: number | null | undefined;
+  paymentTermsDays?: number | null | undefined;
+  extra?: string | null | undefined;
 }) {
   const lines: string[] = [];
   if (opts.vatExempt) lines.push("TVA non applicable, art. 293 B du CGI.");
