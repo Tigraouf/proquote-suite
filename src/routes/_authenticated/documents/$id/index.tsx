@@ -210,12 +210,22 @@ function DocumentDetail() {
             {d["notes"] as string}
           </p>
         ) : null}
-        {profile?.vat_exempt && (
-          <p className="mt-2 text-xs text-muted-foreground">
-            TVA non applicable, art. 293 B du CGI.
-          </p>
-        )}
+
+        <div className="mt-6 space-y-1 border-t border-border pt-4 text-[11px] leading-relaxed text-muted-foreground">
+          {legalMentions({
+            isQuote,
+            vatExempt: profile?.vat_exempt,
+            penaltyRate: profile?.late_penalty_rate,
+            recoveryFee: profile?.recovery_fee,
+            paymentTermsDays: profile?.payment_terms_days,
+            extra: profile?.legal_notes,
+          }).map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+          {profile?.iban ? <p>Règlement par virement — IBAN : {profile.iban}</p> : null}
+        </div>
       </div>
+
 
       {premium ? (
         <PaymentsPanel documentId={id} total={Number(d["total"])} />
