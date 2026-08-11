@@ -22,9 +22,11 @@ const NAV = [
   { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
   { to: "/clients", label: "Clients", icon: Users },
   { to: "/documents", label: "Devis & factures", icon: FileText },
+  { to: "/exports", label: "Export comptable", icon: FileSpreadsheet },
   { to: "/settings", label: "Mon entreprise", icon: Settings },
   { to: "/premium", label: "Premium", icon: Sparkles },
 ] as const;
+
 
 export function AppShell() {
   const [open, setOpen] = useState(false);
