@@ -241,7 +241,9 @@ export type Database = {
           hourly_rate: number | null
           iban: string | null
           id: string
+          late_penalty_rate: number
           legal_form: string | null
+          legal_notes: string | null
           logo_url: string | null
           payment_terms_days: number
           phone: string | null
@@ -249,6 +251,7 @@ export type Database = {
           plan_cycle: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at: string | null
           postal_code: string | null
+          recovery_fee: number
           siret: string | null
           trade: string | null
           updated_at: string
@@ -267,7 +270,9 @@ export type Database = {
           hourly_rate?: number | null
           iban?: string | null
           id: string
+          late_penalty_rate?: number
           legal_form?: string | null
+          legal_notes?: string | null
           logo_url?: string | null
           payment_terms_days?: number
           phone?: string | null
@@ -275,6 +280,7 @@ export type Database = {
           plan_cycle?: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at?: string | null
           postal_code?: string | null
+          recovery_fee?: number
           siret?: string | null
           trade?: string | null
           updated_at?: string
@@ -293,7 +299,9 @@ export type Database = {
           hourly_rate?: number | null
           iban?: string | null
           id?: string
+          late_penalty_rate?: number
           legal_form?: string | null
+          legal_notes?: string | null
           logo_url?: string | null
           payment_terms_days?: number
           phone?: string | null
@@ -301,6 +309,7 @@ export type Database = {
           plan_cycle?: Database["public"]["Enums"]["plan_cycle"]
           plan_renews_at?: string | null
           postal_code?: string | null
+          recovery_fee?: number
           siret?: string | null
           trade?: string | null
           updated_at?: string
@@ -361,7 +370,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      next_document_number: {
+        Args: { _type: Database["public"]["Enums"]["doc_type"] }
+        Returns: string
+      }
     }
     Enums: {
       doc_status:
