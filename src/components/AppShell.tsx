@@ -4,6 +4,8 @@ import {
   LayoutDashboard,
   Users,
   FileText,
+  FileSpreadsheet,
+
   Settings,
   Sparkles,
   LogOut,
