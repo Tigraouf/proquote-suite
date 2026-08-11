@@ -50,10 +50,15 @@ function Settings() {
     city: "",
     phone: "",
     website: "",
+    iban: "",
     vat_exempt: false,
     vat_rate: 20,
     payment_terms_days: 30,
+    late_penalty_rate: 10.75,
+    recovery_fee: 40,
+    legal_notes: "",
   });
+
 
   useEffect(() => {
     if (!profile) return;
