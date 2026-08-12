@@ -1,5 +1,9 @@
 import { jsPDF } from "jspdf";
-import { euro, frDate, legalMentions, type DocStatus } from "@/lib/billing";
+import { euro as rawEuro, frDate, legalMentions, type DocStatus } from "@/lib/billing";
+
+/** Les espaces insécables fines d'Intl ne sont pas rendues par les polices PDF. */
+const clean = (s: string) => s.replace(/[\u202f\u00a0\u2009]/g, " ");
+const euro = (n: number) => clean(rawEuro(n));
 
 export type PdfProfile = {
   company_name?: string | null;
@@ -155,7 +159,7 @@ export function buildDocumentPdf(args: {
   pdf.setFontSize(9.5);
   pdf.setTextColor(20);
   for (const it of items) {
-    const wrapped = pdf.splitTextToSize(it.description || "—", 92) as string[];
+    const wrapped = pdf.splitTextToSize(it.description || "—", 78) as string[];
     if (y + wrapped.length * 4.6 > 250) {
       pdf.addPage();
       y = M + 6;
@@ -183,7 +187,7 @@ export function buildDocumentPdf(args: {
   };
   if (Number(d.discount) > 0) totalRow("Remise", `-${euro(Number(d.discount))}`);
   totalRow("Total HT", euro(Number(d.subtotal)));
-  totalRow(`TVA ${Number(d.vat_rate)}%`, euro(Number(d.vat_amount)));
+  totalRow(`TVA ${Number(d.vat_rate)} %`, euro(Number(d.vat_amount)));
   pdf.setDrawColor(200);
   pdf.line(tx, y - 3, W - M, y - 3);
   y += 2;
@@ -195,7 +199,7 @@ export function buildDocumentPdf(args: {
     y += 4;
     pdf.setFontSize(9);
     pdf.setTextColor(90);
-    const n = pdf.splitTextToSize(d.notes.trim(), CONTENT) as string[];
+    const n = pdf.splitTextToSize(clean(d.notes.trim()), CONTENT) as string[];
     pdf.text(n, M, y);
     y += n.length * 4.4 + 3;
   }
@@ -218,7 +222,7 @@ export function buildDocumentPdf(args: {
   pdf.setFontSize(7.5);
   pdf.setTextColor(120);
   for (const m of mentions) {
-    const w = pdf.splitTextToSize(m, CONTENT) as string[];
+    const w = pdf.splitTextToSize(clean(m), CONTENT) as string[];
     if (y + w.length * 3.4 > 285) {
       pdf.addPage();
       y = M;
