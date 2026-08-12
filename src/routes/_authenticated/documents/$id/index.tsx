@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Pencil, Printer, Send, CheckCircle2, Lock } from "lucide-react";
+import { ArrowLeft, Download, Pencil, Printer, Send, CheckCircle2, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
@@ -17,6 +17,7 @@ import {
   statusTone,
   type DocStatus,
 } from "@/lib/billing";
+import { buildDocumentPdf, documentFileName, type PdfDoc } from "@/lib/pdf";
 
 
 export const Route = createFileRoute("/_authenticated/documents/$id/")({
@@ -79,6 +80,25 @@ function DocumentDetail() {
   const c = data.client as Record<string, unknown> | null;
   const isQuote = d["type"] === "devis";
 
+  function downloadPdf() {
+    try {
+      const pdf = buildDocumentPdf({
+        doc: data!.doc as unknown as PdfDoc,
+        items: (data!.items ?? []).map((i) => ({
+          description: i.description as string,
+          quantity: Number(i.quantity),
+          unit: i.unit as string,
+          unit_price: Number(i.unit_price),
+        })),
+        profile,
+        client: data!.client as never,
+      });
+      pdf.save(documentFileName({ type: d["type"] as string, number: d["number"] as string }));
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "PDF impossible à générer");
+    }
+  }
+
   return (
     <div className="mx-auto max-w-3xl">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
@@ -88,8 +108,11 @@ function DocumentDetail() {
           </Link>
         </Button>
         <div className="flex flex-wrap gap-2">
+          <Button size="sm" onClick={downloadPdf}>
+            <Download className="size-4" /> Télécharger le PDF
+          </Button>
           <Button variant="outline" size="sm" onClick={() => window.print()}>
-            <Printer className="size-4" /> Imprimer / PDF
+            <Printer className="size-4" /> Imprimer
           </Button>
           <Button asChild variant="outline" size="sm">
             <Link to="/documents/$id/edit" params={{ id }}>
